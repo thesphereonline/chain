@@ -1,8 +1,9 @@
 package ledger
 
 import (
-    "encoding/json"
     "log"
+	"crypto/sha256"
+    "encoding/hex"
 )
 
 type SmartContract struct {

@@ -1,6 +1,9 @@
 package ledger
 
-import "time"
+import (
+	"time"
+	"../shared"
+)
 
 type Blockchain struct {
     Blocks []*Block
@@ -12,7 +15,7 @@ func NewBlockchain() *Blockchain {
     }
 }
 
-func (bc *Blockchain) AddBlock(transactions []Transaction, contracts []SmartContract) {
+func (bc *Blockchain) AddBlock(transactions []shared.Transaction, contracts []shared.SmartContract) {
     prevBlock := bc.Blocks[len(bc.Blocks)-1]
     newBlock := &Block{
         Index:        len(bc.Blocks),
@@ -49,21 +52,6 @@ func (bc *Blockchain) AddReceivedBlock(block *Block) bool {
         return true
     }
     return false
-}
-
-func (bc *Blockchain) AddBlock(transactions []Transaction) {
-    prevBlock := bc.Blocks[len(bc.Blocks)-1]
-    newBlock := &Block{
-        Index:        len(bc.Blocks),
-        Timestamp:    time.Now(),
-        Transactions: transactions,
-        PreviousHash: prevBlock.Hash,
-        Difficulty:   bc.getDifficulty(),
-        Nonce:        0,
-    }
-    newBlock.MineBlock(newBlock.Difficulty)
-    newBlock.Hash = newBlock.CalculateHash()
-    bc.Blocks = append(bc.Blocks, newBlock)
 }
 
 func (bc *Blockchain) getDifficulty() int {

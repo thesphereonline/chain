@@ -1,8 +1,10 @@
 package main
 
 import (
+    "fmt"
+    "github.com/thesphereonline/chain/backend/blockchain" // Ensure this path is correct
     "github.com/thesphereonline/chain/backend/blockchain/ledger"
-    "github.com/thesphereonline/chain/backend/blockchain/p2p"
+	"github.com/thesphereonline/chain/backend/blockchain/p2p"
 )
 
 func main() {
@@ -13,10 +15,25 @@ func main() {
     go node1.Start()
     go node2.Start()
 
-    // Simulate adding a block
-    blockchain := ledger.NewBlockchain()
-    tx := ledger.NewTransaction("Alice", "Bob", 50)
-    blockchain.AddBlock([]ledger.Transaction{*tx})
+    // Initialize the blockchain
+    bc := blockchain.NewBlockchain()
+
+    // Create some sample transactions
+    transactions := []ledger.Transaction{
+        {ID: "tx1", Amount: 100},
+        {ID: "tx2", Amount: 200},
+    }
+
+    // Create some sample smart contracts
+    contracts := []ledger.SmartContract{
+        {ID: "sc1", Code: "contract_code_1"},
+        {ID: "sc2", Code: "contract_code_2"},
+    }
+
+    // Add a block to the blockchain
+    bc.AddBlock(transactions, contracts)
+
+    fmt.Println("Block added successfully.")
 
     node1.BroadcastBlock(blockchain.Blocks[1])
 
