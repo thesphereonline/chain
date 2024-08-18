@@ -1,17 +1,15 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
-
-	"github.com/gorilla/mux"
-	"github.com/thesphereonline/chain/backend/routers"
 )
 
 func main() {
-	router := mux.NewRouter()
-	router = routers.SetUserRouters(router)
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprint(w, "Hello, World!")
+	})
 
-	log.Println("Server listening on port 8000")
-	log.Fatal(http.ListenAndServe(":8000", router))
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }
